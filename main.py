@@ -4,6 +4,7 @@ import re
 
 # Caminho para a área de trabalho
 desktop_path = os.path.join(os.path.expanduser("~"), "OneDrive", "Desktop")
+# desktop_path = os.path.join(os.path.expanduser("~"), "Downloads", "Arquivos Repasses EME - Script")
 
 # Caminhos dos arquivos
 comissao_path = os.path.join(desktop_path, "relatorio_comissao_vendedores.xlsx")
