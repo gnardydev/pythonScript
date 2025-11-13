@@ -10,7 +10,7 @@ root = tk.Tk()
 root.withdraw()
 
 # Caminho para a área de trabalho
-desktop_path = os.path.join(os.path.expanduser("~"), "OneDrive", "Desktop")
+desktop_path = r"C:\Users\gacna\OneDrive\Desktop\Arquivos Repasses EME - Script"
 
 # Caminhos dos arquivos
 comissao_path = os.path.join(desktop_path, "relatorio_comissao_vendedores.xlsx")
@@ -205,24 +205,11 @@ try:
     df_contas_pagar_raw = pd.read_excel(contas_pagar_path, skiprows=1)
     print(f"   ✓ Arquivo carregado: {df_contas_pagar_raw.shape[0]} linhas, {df_contas_pagar_raw.shape[1]} colunas")
 
-    # Verificar se as colunas Q e R existem (índices 16 e 17)
-    colunas_necessarias = ['Taxa do banco', 'Taxa da operadora']
-    colunas_faltantes = []
-
-    # Verificar pela posição (colunas Q=16 e R=17)
-    if df_contas_pagar_raw.shape[1] < 18:
-        print(f"   ⚠️  AVISO: Arquivo tem apenas {df_contas_pagar_raw.shape[1]} colunas")
-        print("      Adicionando colunas faltantes: 'Taxa do banco' e 'Taxa da operadora'")
-
-        # Adicionar colunas faltantes com valor 0
-        while df_contas_pagar_raw.shape[1] < 17:
-            df_contas_pagar_raw[f'Coluna_Extra_{df_contas_pagar_raw.shape[1]}'] = 0
-
-        df_contas_pagar_raw['Taxa do banco'] = 0
-        df_contas_pagar_raw['Taxa da operadora'] = 0
-        print(f"   ✓ Colunas adicionadas automaticamente (valores = 0)")
-    else:
-        print("   ✓ Todas as colunas necessárias presentes")
+    # Garantir que as colunas necessárias existam por nome; se faltarem, criar com valor 0
+    for col in ['Taxa do banco', 'Taxa da operadora']:
+        if col not in df_contas_pagar_raw.columns:
+            df_contas_pagar_raw[col] = 0
+            print(f"   ⚠️  Coluna '{col}' não encontrada - adicionando com zeros")
 
     df_contas_pagar = df_contas_pagar_raw
 
